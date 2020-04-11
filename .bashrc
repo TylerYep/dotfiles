@@ -6,6 +6,7 @@ export PS1='\h:\W $(__git_ps1 '[%s]')$ '
 alias aliasedit='vim ~/.bashrc'
 alias fishconfig='vim ~/.config/fish/config.fish'
 alias cd..='cd ..'
+alias ccd='cd'
 alias activ='conda activate'
 alias deac='conda deactivate'
 alias pylinta='find . -iname "*.py" | xargs pylint'
@@ -20,7 +21,7 @@ alias gitrb='git rebase -i HEAD~2'
 # Remove all currently staged files (good for updating gitignore)
 alias gitclear='git rm -r --cached .'
 
-# Remove all branches that are already in sync with origin master 
+# Remove all branches that are already in sync with origin master
 alias gitprune='git remote prune origin'
 alias gitstatus='function _status(){ find ~/Documents/Github/$1 -name .git -execdir git status \; ; };_status'
 alias gitsummary='function _gitsumm(){ find ~/Documents/Github/ -maxdepth 1 -mindepth 1 -type d -exec sh -c "(echo {} && cd {} && git status -s && git fetch && echo;)" \;  ; };_gitsumm'

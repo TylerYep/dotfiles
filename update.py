@@ -33,7 +33,8 @@ def copy_file_or_folder(source, destination, filename):
 def create_dotfiles(source, destination):
     if source == '~':
         source = '/Users/tyleryep'
-
+    if destination == '~':
+        destination = '/Users/tyleryep'
     for filename in DOTFILES:
         remove_duplicate_files(destination, filename)
         copy_file_or_folder(source, destination, filename)
@@ -41,10 +42,8 @@ def create_dotfiles(source, destination):
 
 def init_pipeline():
     parser = argparse.ArgumentParser(description='')
-
     parser.add_argument('mode', type=str, choices=['imp', 'exp'],
                         help='import mode')
-
     return parser.parse_args()
 
 
