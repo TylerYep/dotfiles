@@ -44,4 +44,3 @@ alias wolf='cd ~/Documents/Github/wolfbot'
 
 alias planner='open ~/Documents/Stanford_4_Year_Plan.xlsx'
 alias resume='open ~/Documents/TylerYep_2019.docx'
-eval `opam config env`

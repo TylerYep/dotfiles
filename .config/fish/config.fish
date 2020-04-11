@@ -6,13 +6,14 @@ alias fishedit 'vim ~/.config/fish/config.fish'
 alias .fish 'cd ~/.config/fish/'
 alias python '/Users/tyleryep/miniconda3/bin/python3.7'
 alias cd.. 'cd ..'
+alias ccd 'cd'
 alias filesize 'du -sh'
 alias activ 'conda activate'
 alias deac 'conda deactivate'
 alias pylinta 'find . -iname "*.py" | xargs pylint'
 alias jekyl 'bundle exec jekyll serve'
 alias jup 'jupyter notebook'
-alias lean '/Users/tyleryep/Downloads/lean-3.4.2-darwin/bin/lean'
+alias pipbuild 'rm -r dist/; python setup.py sdist bdist_wheel; twine upload dist/*'
 
 ##############
 #   Github   #
@@ -42,6 +43,7 @@ alias gitclear 'git rm -r --cached .'
 
 # Remove all branches that are already in sync with origin master.
 alias gitprune 'git remote prune origin'
+# git branch --v | grep "\[gone\]" | awk '{print $1}' | xargs git branch -D
 
 # Expects a directory name. Runs git status on that repo.
 alias gitstatus _status
@@ -63,6 +65,8 @@ alias back 'github bluepress2-backend'
 alias wiki 'github wiki'
 alias tyep 'github tyleryep.github.io'
 alias wolf 'github wolfbot'
+alias toolkit 'github ai-toolkit'
+alias torchsummary 'github torch-summary'
 
 alias myth 'ssh tyep@myth.stanford.edu'
 alias cardinal 'ssh tyep@cardinal.stanford.edu'
@@ -74,3 +78,6 @@ alias resume 'open ~/Documents/TylerYep_2019.docx'
 # !! Contents within this block are managed by 'conda init' !!
 eval /Users/tyleryep/miniconda3/bin/conda "shell.fish" "hook" $argv | source
 # <<< conda initialize <<<
+
+# The next line updates PATH for the Google Cloud SDK.
+if [ -f '/Users/tyleryep/google-cloud-sdk/path.fish.inc' ]; . '/Users/tyleryep/google-cloud-sdk/path.fish.inc'; end
