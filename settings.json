@@ -1,0 +1,65 @@
+{
+    "files.autoSave": "afterDelay",
+    "workbench.startupEditor": "newUntitledFile",
+    "window.zoomLevel": 0,
+    "editor.fontSize": 14,
+    "files.exclude": {
+        "**/.git": true,
+        "**/.svn": true,
+        "**/.hg": true,
+        "**/CVS": true,
+        "**/.DS_Store": true,
+        "**/__pycache__": true,
+        "**/*.pyc": true,
+        "**/*.olean": true
+    },
+    "editor.wordWrapColumn": 100,
+    "telemetry.enableCrashReporter": false,
+    "telemetry.enableTelemetry": false,
+    "terminal.integrated.shell.osx": "/usr/local/bin/fish",
+    "workbench.tips.enabled": false,
+    "git.autoStash": true,
+    "editor.scrollBeyondLastLine": false,
+    "workbench.tree.indent": 24,
+    "terminal.integrated.inheritEnv": false,
+    "terminal.integrated.fontSize": 14,
+    "debug.console.fontSize": 14,
+    "workbench.colorTheme": "One Dark Pro",
+    "breadcrumbs.enabled": false,
+    "extensions.showRecommendationsOnlyOnDemand": true,
+    "workbench.enableExperiments": false,
+    "editor.rulers": [
+        100
+    ],
+    "files.trimFinalNewlines": true,
+    "[jsonc]": {
+        "editor.defaultFormatter": "vscode.json-language-features"
+    },
+    "python.condaPath": "conda",
+    "editor.wordWrap": "on",
+    "files.autoSaveDelay": 300,
+    "explorer.confirmDragAndDrop": false,
+    "problems.decorations.enabled": false,
+    "python.linting.pylintArgs": [
+        "--errors-only",
+        "--generated-members=numpy.* ,torch.* ,cv2.* , cv.*"
+    ],
+    "[html]": {
+        "editor.defaultFormatter": "vscode.html-language-features"
+    },
+    "files.trimTrailingWhitespace": true,
+    "workbench.editor.tabCloseButton": "left",
+    "explorer.confirmDelete": false,
+    "workbench.activityBar.visible": true,
+    "[cpp]": {
+        "editor.formatOnSave": true,
+    },
+    "clang-format.executable": "/usr/local/bin/clang-format",
+    "javascript.updateImportsOnFileMove.enabled": "never",
+    "[javascript]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "python.defaultInterpreterPath": "/Users/tyleryep/miniconda3/bin/python",
+    "editor.find.addExtraSpaceOnTop": false,
+    "search.smartCase": true
+}
