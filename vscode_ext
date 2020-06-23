@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+echo "Getting all installed vscode extensions..."
+code --list-extensions | xargs -L 1 echo code --install-extension > "vscode_ext.txt"

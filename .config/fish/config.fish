@@ -14,6 +14,7 @@ alias pylinta 'find . -iname "*.py" | xargs pylint'
 alias jekyl 'bundle exec jekyll serve'
 alias jup 'jupyter notebook'
 alias pipbuild 'rm -r dist/; python setup.py sdist bdist_wheel; twine upload dist/*'
+alias pipsize 'pip list | tail -n +3 | awk \'{print $1}\' | xargs pip show | grep -E \'Location:|Name:\' | cut -d \' \' -f 2 | paste -d \' \' - - | awk \'{print $2 "/" tolower($1)}\' | xargs du -sh 2> /dev/null'
 
 ##############
 #   Github   #
@@ -51,6 +52,9 @@ alias gitstatus _status
 # Runs shortened git status on all repos in Github folder.
 alias gitsummary _summary
 
+# Gets number of lines in all files of a GitHub repo.
+alias gitlines 'git ls-files | grep -Ev ".pdf|.png|.jpg" | xargs wc -l'
+
 #########################
 #   Directory Aliases   #
 #########################
@@ -60,19 +64,14 @@ alias documents 'cd ~/Documents'
 alias pictures 'cd ~/Pictures'
 
 alias blog 'github blog'
-alias front 'github bluepress2-frontend'
-alias back 'github bluepress2-backend'
 alias wiki 'github wiki'
 alias tyep 'github tyleryep.github.io'
 alias wolf 'github wolfbot'
-alias toolkit 'github ai-toolkit'
-alias torchsummary 'github torch-summary'
 
 alias myth 'ssh tyep@myth.stanford.edu'
-alias cardinal 'ssh tyep@cardinal.stanford.edu'
 
 alias planner 'open ~/Documents/Stanford_4_Year_Plan.xlsx'
-alias resume 'open ~/Documents/TylerYep_2019.docx'
+alias resume 'open ~/Documents/TylerYep_2020.docx'
 
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!

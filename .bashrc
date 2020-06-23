@@ -31,17 +31,13 @@ alias documents='cd ~/Documents'
 alias pictures='cd ~/Pictures'
 
 alias blog='github blog'
-alias cs231n='github stanford-cs231n'
-alias front='github bluepress2-frontend'
-alias back='github bluepress2-backend'
 alias jup='jupyter notebook'
 
 alias myth='ssh tyep@myth.stanford.edu'
-alias cardinal='ssh tyep@cardinal.stanford.edu'
 
-alias wiki='cd ~/Documents/Github/wiki'
-alias tyep='cd ~/Documents/Github/tyleryep.github.io'
-alias wolf='cd ~/Documents/Github/wolfbot'
+alias wiki='github wiki'
+alias tyep='github tyleryep.github.io'
+alias wolf='github wolfbot'
 
 alias planner='open ~/Documents/Stanford_4_Year_Plan.xlsx'
-alias resume='open ~/Documents/TylerYep_2019.docx'
+alias resume='open ~/Documents/TylerYep_2020.docx'

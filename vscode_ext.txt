@@ -1,0 +1,13 @@
+code --install-extension akamud.vscode-theme-onelight
+code --install-extension bmalehorn.vscode-fish
+code --install-extension bungcip.better-toml
+code --install-extension esbenp.prettier-vscode
+code --install-extension george-alisson.html-preview-vscode
+code --install-extension jroesch.lean
+code --install-extension ms-python.python
+code --install-extension ms-vsliveshare.vsliveshare
+code --install-extension rust-lang.rust
+code --install-extension sissel.shopify-liquid
+code --install-extension tomoki1207.pdf
+code --install-extension xaver.clang-format
+code --install-extension zhuangtongfa.material-theme
