@@ -1,6 +1,6 @@
 [user]
-	email = tyep@stanford.edu
 	name = Tyler Yep
+	email = tyep@cs.stanford.edu
 [filter "lfs"]
 	required = true
 	clean = git-lfs clean -- %f
