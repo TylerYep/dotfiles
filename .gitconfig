@@ -1,5 +1,6 @@
 [user]
 	email = tyep@stanford.edu
+	name = Tyler Yep
 [filter "lfs"]
 	required = true
 	clean = git-lfs clean -- %f
@@ -7,3 +8,5 @@
 	process = git-lfs filter-process
 [push]
 	default = simple
+[pull]
+	rebase = true
