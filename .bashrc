@@ -25,6 +25,7 @@ alias gitclear='git rm -r --cached .'
 alias gitprune='git remote prune origin'
 alias gitstatus='function _status(){ find ~/Documents/Github/$1 -name .git -execdir git status \; ; };_status'
 alias gitsummary='function _gitsumm(){ find ~/Documents/Github/ -maxdepth 1 -mindepth 1 -type d -exec sh -c "(echo {} && cd {} && git status -s && git fetch && echo;)" \;  ; };_gitsumm'
+alias gitlog='git log --graph --pretty="tformat:%C(yellow)%h%Creset %Cgreen(%ar)%Creset %C(bold blue)<%an>%Creset %C(red)%d%Creset %s" --all'
 
 alias downloads='cd ~/Downloads'
 alias documents='cd ~/Documents'

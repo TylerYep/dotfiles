@@ -3,7 +3,7 @@ import shutil
 import argparse
 
 
-HOME_DIR = "/Users/tyleryep"
+HOME_DIR = "/Users/tyler.yep"
 DOTFILES = [
     ".config/fish",
     ".bash_profile",
@@ -18,7 +18,7 @@ def remove_duplicate_files(destination, filename):
     full_dest_path = os.path.join(destination, filename)
     if os.path.isdir(full_dest_path):
         shutil.rmtree(full_dest_path)
-    else:
+    elif os.path.isfile(full_dest_path):
         os.remove(full_dest_path)
 
 

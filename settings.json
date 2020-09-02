@@ -61,5 +61,7 @@
     },
     "python.defaultInterpreterPath": "/Users/tyleryep/miniconda3/bin/python",
     "editor.find.addExtraSpaceOnTop": false,
-    "search.smartCase": true
+    "search.smartCase": true,
+    "gitblame.statusBarMessageFormat": "Last edited by: ${author.name} ( ${time.ago} )",
+    "python.formatting.provider": "black"
 }
