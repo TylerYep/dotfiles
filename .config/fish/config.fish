@@ -9,7 +9,7 @@ set WORKON_HOME $HOME/.virtualenvs
 #   Shell Aliases   #
 #####################
 
-alias fishedit 'vim ~/.config/fish/config.fish'
+alias fishedit 'code ~/.config/fish/config.fish'
 alias .fish 'cd ~/.config/fish/'
 alias cd.. 'cd ..'
 alias ccd 'cd'
@@ -21,6 +21,11 @@ alias jekyl 'bundle exec jekyll serve'
 alias jup 'jupyter notebook'
 alias pipbuild 'rm -r dist/; python setup.py sdist bdist_wheel; twine upload dist/*'
 alias pipsize 'pip list | tail -n +3 | awk \'{print $1}\' | xargs pip show | grep -E \'Location:|Name:\' | cut -d \' \' -f 2 | paste -d \' \' - - | awk \'{print $2 "/" tolower($1)}\' | xargs du -sh 2> /dev/null'
+alias explore _explore
+
+function _explore
+    code ~/Documents/Github/workshop/explore/$argv[1]
+end
 
 ##############
 #   Github   #
@@ -39,7 +44,8 @@ function _status
 end
 
 function _summary
-    find ~/Documents/Github/ -maxdepth 1 -mindepth 1 -type d -exec sh -c "(echo {} && cd {} && git status && git fetch && echo;)" \;
+    find ~/Documents/Github/ -maxdepth 1 -mindepth 1 -type d -exec sh -c \
+        "(echo {} && cd {} && git status && git fetch && echo;)" \;
 end
 
 alias github _github
@@ -144,3 +150,4 @@ alias resume 'open ~/Documents/TylerYep_2020.docx'
 if not contains (pyenv root)/shims $PATH
     set PATH (pyenv root)/shims:$PATH
 end
+set -g fish_user_paths "/usr/local/opt/tcl-tk/bin" $fish_user_paths
