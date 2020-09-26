@@ -3,7 +3,7 @@ import shutil
 import argparse
 
 
-HOME_DIR = "/Users/tyler.yep"
+HOME_DIR = "/Users/tyleryep"
 DOTFILES = [
     ".config/fish",
     ".bash_profile",

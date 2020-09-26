@@ -1,4 +1,11 @@
 #####################
+#   Global Config   #
+#####################
+set EDITOR vim
+set BASH_SILENCE_DEPRECATION_WARNING 1
+set WORKON_HOME $HOME/.virtualenvs
+
+#####################
 #   Shell Aliases   #
 #####################
 
@@ -38,7 +45,7 @@ end
 alias github _github
 alias gita 'git add .; git commit -m'
 alias gitamend 'git add .; git commit --amend'
-alias gitstash 'git add.; git stash'
+alias gitstash 'git add .; git stash'
 
 # Remove all currently staged files (good for updating gitignore).
 alias gitclear 'git rm -r --cached .'
@@ -78,72 +85,62 @@ alias resume 'open ~/Documents/TylerYep_2020.docx'
 #       Robinhood       #
 #########################
 
-set EDITOR vim
-set BASH_SILENCE_DEPRECATION_WARNING 1
-set WORKON_HOME $HOME/.virtualenvs
-bash /usr/local/bin/virtualenvwrapper.sh
+# bash /usr/local/bin/virtualenvwrapper.sh
 
-function _export_django_settings_env
-    if test $argv[1] = "brokeback"
-        set DJANGO_SETTINGS_MODULE "settings.local.server"
-    end
-end
+# function _export_django_settings_env
+#     if test $argv[1] = "brokeback"
+#         set DJANGO_SETTINGS_MODULE "settings.local.server"
+#     end
+# end
 
-function _workon_cwd
-    # Check that this is a Git repo
-    set GIT_DIR (git rev-parse --git-dir 2> /dev/null)
-    if test $status -eq 0
-        # Find the repo root and check for virtualenv name override
-        set GIT_DIR eval `\cd $GIT_DIR pwd`
-        set PROJECT_ROOT `dirname "$GIT_DIR"`
-        set PROJECT_NAME `basename "$PROJECT_ROOT"`
-        # For rh repo, treat the current working directory as the project directory
-        if test "$PROJECT_NAME" = "rh"
-            set ENV_NAME "(basename) (pwd)"
-        else
-            set ENV_NAME "$PROJECT_NAME"
-        end
-        if [test -f "$PROJECT_ROOT/.venv"
-            set ENV_NAME `cat "$PROJECT_ROOT/.venv"`
-        end
-        # Activate the environment only if it is not already active
-        if test "$VIRTUAL_ENV" != "$WORKON_HOME/$ENV_NAME"
-            if test -e "$WORKON_HOME/$ENV_NAME/bin/activate"
-                workon "$ENV_NAME" && set CD_VIRTUAL_ENV="$ENV_NAME"
-            end
-            export_django_settings_env $ENV_NAME
-        end
-    else if $CD_VIRTUAL_ENV
-        # We've just left the repo, deactivate the environment
-        # Note: this only happens if the virtualenv was activated automatically
-        deactivate && unset CD_VIRTUAL_ENV
-    end
-end
+# function _workon_cwd
+#     # Check that this is a Git repo
+#     set GIT_DIR (git rev-parse --git-dir 2> /dev/null)
+#     if test $status -eq 0
+#         # Find the repo root and check for virtualenv name override
+#         set GIT_DIR eval `\cd $GIT_DIR pwd`
+#         set PROJECT_ROOT `dirname "$GIT_DIR"`
+#         set PROJECT_NAME `basename "$PROJECT_ROOT"`
+#         # For rh repo, treat the current working directory as the project directory
+#         if test "$PROJECT_NAME" = "rh"
+#             set ENV_NAME "(basename) (pwd)"
+#         else
+#             set ENV_NAME "$PROJECT_NAME"
+#         end
+#         if [test -f "$PROJECT_ROOT/.venv"
+#             set ENV_NAME `cat "$PROJECT_ROOT/.venv"`
+#         end
+#         # Activate the environment only if it is not already active
+#         if test "$VIRTUAL_ENV" != "$WORKON_HOME/$ENV_NAME"
+#             if test -e "$WORKON_HOME/$ENV_NAME/bin/activate"
+#                 workon "$ENV_NAME" && set CD_VIRTUAL_ENV="$ENV_NAME"
+#             end
+#             export_django_settings_env $ENV_NAME
+#         end
+#     else if $CD_VIRTUAL_ENV
+#         # We've just left the repo, deactivate the environment
+#         # Note: this only happens if the virtualenv was activated automatically
+#         deactivate && unset CD_VIRTUAL_ENV
+#     end
+# end
 
-function _venv_cd
-    cd $argv && _workon_cwd
-end
+# function _venv_cd
+#     cd $argv && _workon_cwd
+# end
 
-alias arc '/Users/tyler.yep/robinhood/phabricator/arcanist/bin/arc'
-# alias cd _venv_cd
-alias clean_pyc "find . -name '*.pyc' -delete"
-alias ad "arc diff --coverage --browse --skip-binaries"
-alias submod "git submodule update --init --recursive"
-alias submodpull "git submodule update --remote"
+# alias arc '/Users/tyler.yep/robinhood/phabricator/arcanist/bin/arc'
+# # alias cd _venv_cd
+# alias clean_pyc "find . -name '*.pyc' -delete"
+# alias ad "arc diff --coverage --browse --skip-binaries"
+# alias submod "git submodule update --init --recursive"
+# alias submodpull "git submodule update --remote"
 
-alias ut "DJANGO_SETTINGS_MODULE=settings.local.server REUSE_DB=true ./manage.py test --nologcapture --nocapture"
-alias mut "DJANGO_SETTINGS_MODULE=settings.local.server REUSE_DB=false ./manage.py test --nologcapture --noinput --nocapture"
+# alias ut "DJANGO_SETTINGS_MODULE=settings.local.server REUSE_DB=true ./manage.py test --nologcapture --nocapture"
+# alias mut "DJANGO_SETTINGS_MODULE=settings.local.server REUSE_DB=false ./manage.py test --nologcapture --noinput --nocapture"
+
+# alias brokeback 'source ~/.virtualenvs/brokeback/bin/activate.fish'
+# alias bonfire 'source ~/.virtualenvs/bonfire/bin/activate.fish'
+
 if not contains (pyenv root)/shims $PATH
     set PATH (pyenv root)/shims:$PATH
 end
-
-alias brokeback 'source ~/.virtualenvs/brokeback/bin/activate.fish'
-alias bonfire 'source ~/.virtualenvs/bonfire/bin/activate.fish'
-
-# >>> conda initialize >>>
-# !! Contents within this block are managed by 'conda init' !!
-# eval /Users/tyleryep/miniconda3/bin/conda "shell.fish" "hook" $argv | source
-# <<< conda initialize <<<
-
-# The next line updates PATH for the Google Cloud SDK.
-# if [ -f '/Users/tyleryep/google-cloud-sdk/path.fish.inc' ]; . '/Users/tyleryep/google-cloud-sdk/path.fish.inc'; end
