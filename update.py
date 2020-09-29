@@ -45,15 +45,15 @@ def init_pipeline():
     parser = argparse.ArgumentParser(
         description="Use imp to commit new configs and exp to use the saved configs."
     )
-    parser.add_argument("mode", type=str, choices=["exp"], help="mode")
+    parser.add_argument("mode", type=str, choices=["imp", "exp"], help="mode")
     return parser.parse_args()
 
 
 if __name__ == "__main__":
     args = init_pipeline()
-    # if args.mode == "imp":
-    #     create_dotfiles("~", ".")
-    if args.mode == "exp":
+    if args.mode == "imp":
+        create_dotfiles("~", ".")
+    elif args.mode == "exp":
         create_dotfiles(".", "~")
     else:
         raise ValueError
