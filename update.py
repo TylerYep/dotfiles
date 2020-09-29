@@ -1,6 +1,7 @@
 import os
 import shutil
 import argparse
+from git import Repo
 
 
 HOME_DIR = "/Users/tyleryep"
@@ -50,6 +51,13 @@ def init_pipeline():
 
 
 if __name__ == "__main__":
+    repo = Repo(".")
+    changed_files = [item.a_path for item in repo.index.diff(None)]
+    if changed_files:
+        raise RuntimeError(
+            "Please commit changes to the repo before attempting to update dotfiles."
+        )
+
     args = init_pipeline()
     if args.mode == "imp":
         create_dotfiles("~", ".")
