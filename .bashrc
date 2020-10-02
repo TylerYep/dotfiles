@@ -43,5 +43,4 @@ alias wolf='github wolfbot'
 alias planner='open ~/Documents/Stanford_4_Year_Plan.xlsx'
 alias resume='open ~/Documents/TylerYep_2020.docx'
 
-
 alias arc='/Users/tyler.yep/robinhood/phabricator/arcanist/bin/arc'

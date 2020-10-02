@@ -8,6 +8,7 @@ if not contains (pyenv root)/shims $PATH
     set PATH (pyenv root)/shims:$PATH
 end
 bash /usr/local/bin/virtualenvwrapper.sh
+set GITHUB_HOME ~/Documents/Github
 
 #####################
 #   Shell Aliases   #
@@ -24,7 +25,9 @@ alias pylinta 'find . -iname "*.py" | xargs pylint'
 alias jekyl 'bundle exec jekyll serve'
 alias jup 'jupyter notebook'
 alias pipbuild 'rm -r dist/; python setup.py sdist bdist_wheel; twine upload dist/*'
-alias pipsize 'pip list | tail -n +3 | awk \'{print $1}\' | xargs pip show | grep -E \'Location:|Name:\' | cut -d \' \' -f 2 | paste -d \' \' - - | awk \'{print $2 "/" tolower($1)}\' | xargs du -sh 2> /dev/null'
+alias pipsize "pip list | tail -n +3 | awk '{print \$1}' | xargs pip show | \
+    grep -E 'Location:|Name:' | cut -d ' ' -f 2 | paste -d ' ' - - | \
+    awk '{print \$2 \"/\" tolower(\$1)}' | xargs du -sh 2> /dev/null"
 
 ##############
 #   Github   #
@@ -53,18 +56,18 @@ alias gitlines 'git ls-files | grep -Ev ".pdf|.png|.jpg" | xargs wc -l'
 
 function _github
     if test -z $argv[1]
-        cd ~/Documents/Github/
+        cd $GITHUB_HOME
     else
-        cd ~/Documents/Github/$argv[1]
+        cd $GITHUB_HOME/$argv[1]
     end
 end
 
 function _status
-    find ~/Documents/Github/$argv[1] -name .git -execdir git status \;
+    find $GITHUB_HOME/$argv[1] -name .git -execdir git status \;
 end
 
 function _summary
-    find ~/Documents/Github/ -maxdepth 1 -mindepth 1 -type d -exec sh -c \
+    find $GITHUB_HOME -maxdepth 1 -mindepth 1 -type d -exec sh -c \
         "(echo {} && cd {} && git status && git fetch && echo;)" \;
 end
 
@@ -87,9 +90,9 @@ alias explore _explore
 
 function _explore
     if test -z $argv[1]
-        cd ~/Documents/Github/workshop/explore
+        cd $GITHUB_HOME/workshop/explore
     else
-        code ~/Documents/Github/workshop/explore/$argv[1]
+        code $GITHUB_HOME/workshop/explore/$argv[1]
     end
 end
 
