@@ -1,29 +1,7 @@
 source ~/.bashrc
 export EDITOR=vim
-
-# added by Miniconda3 installer
-# export PATH="/Users/tyleryep/miniconda3/bin:$PATH"  # commented out by conda initialize
-
-# >>> conda initialize >>>
-# !! Contents within this block are managed by 'conda init' !!
-__conda_setup="$('/Users/tyleryep/miniconda3/bin/conda' 'shell.bash' 'hook' 2> /dev/null)"
-if [ $? -eq 0 ]; then
-    eval "$__conda_setup"
-else
-    if [ -f "/Users/tyleryep/miniconda3/etc/profile.d/conda.sh" ]; then
-        . "/Users/tyleryep/miniconda3/etc/profile.d/conda.sh"
-    else
-        export PATH="/Users/tyleryep/miniconda3/bin:$PATH"
-    fi
-fi
-unset __conda_setup
-# <<< conda initialize <<<
-
-
 export BASH_SILENCE_DEPRECATION_WARNING=1
 export WORKON_HOME=$HOME/.virtualenvs
-
-# This line might fail if you onboarded with ahoy. In this case, leave this line out.
 source /usr/local/bin/virtualenvwrapper.sh
 
 # Command line gitk-like viewer
@@ -79,11 +57,30 @@ alias cd="venv_cd"
 # Delete all the old .pyc files that could be causing you errors
 alias clean_pyc="find . -name '*.pyc' -delete"
 
-# Add arcanist to path (Change 'arc' to where you installed arcanist)
-export PATH="$PATH:~/arc/arcanist/bin"
-
 # Always add coverage if running arc diff
 alias ad="arc diff --coverage --browse --skip-binaries"
-alias submod="git submodule update --init --recursive"
 alias ut="DJANGO_SETTINGS_MODULE=settings.local.server REUSE_DB=true ./manage.py test --nologcapture --nocapture"
 alias mut="DJANGO_SETTINGS_MODULE=settings.local.server REUSE_DB=false ./manage.py test --nologcapture --noinput --nocapture"
+
+function kshell() {
+    pod=$(kubectl get pods --no-headers -o=custom-columns=NAME:.metadata.name | grep ^$1 | head -1)
+    container=""
+    [[ ! -z $2 ]] && container="-c=$2"
+    if [ ! -z $pod ]; then
+        kubectl exec -it $pod $container -- /bin/sh -c "which /bin/bash >/dev/null && exec /bin/bash || exec /bin/sh"
+    else
+        echo "No pods matching \"$1\" were found in the current namespace: \"$(kubectl config view --minify --output 'jsonpath={..namespace}')\""
+        return 1
+    fi
+}
+alias kctl="kubectl"
+alias kgp="kctl get pods"
+alias klogs="kctl logs -c app"
+alias ktunnel="ssh -N -L 9000:internal-api-rh-production-k8s-loc-qcce1d-31352784.us-east-1.elb.amazonaws.com:443 sm"
+alias kubeprod="kctl config use-context production"
+alias kubedev="kctl config use-context development"
+alias kubetest="kctl config use-context test"
+ksh() { kubectl exec -it "$1" "bash"; }
+function kkn () {
+    kctl config set-context --current --namespace=$@
+}

@@ -4,9 +4,6 @@
 set EDITOR vim
 set BASH_SILENCE_DEPRECATION_WARNING 1
 set WORKON_HOME $HOME/.virtualenvs
-if not contains (pyenv root)/shims $PATH
-    set PATH (pyenv root)/shims:$PATH
-end
 bash /usr/local/bin/virtualenvwrapper.sh
 set GITHUB_HOME ~/Documents/Github
 
@@ -16,6 +13,7 @@ set GITHUB_HOME ~/Documents/Github
 
 alias fishedit 'code ~/.config/fish/config.fish'
 alias .fish 'cd ~/.config/fish/'
+alias history 'code ~/.local/share/fish/fish_history'
 alias cd.. 'cd ..'
 alias ccd 'cd'
 alias filesize 'du -sh'
@@ -28,6 +26,16 @@ alias pipbuild 'rm -r dist/; python setup.py sdist bdist_wheel; twine upload dis
 alias pipsize "pip list | tail -n +3 | awk '{print \$1}' | xargs pip show | \
     grep -E 'Location:|Name:' | cut -d ' ' -f 2 | paste -d ' ' - - | \
     awk '{print \$2 \"/\" tolower(\$1)}' | xargs du -sh 2> /dev/null"
+alias workon _workon
+alias workoff _workoff
+
+function _workon
+    source ~/.virtualenvs/$argv[1]/bin/activate.fish
+end
+
+function _workoff
+    source ~/.virtualenvs/$argv[1]/bin/deactivate.fish
+end
 
 ##############
 #   Github   #
@@ -101,6 +109,7 @@ end
 #########################
 
 if test -d /Users/tyler.yep/
+    set RH_HOME ~/robinhood/rh
     alias arc '/Users/tyler.yep/robinhood/phabricator/arcanist/bin/arc'
     alias clean_pyc "find . -name '*.pyc' -delete"
     alias ad "arc diff --coverage --browse --skip-binaries"
@@ -108,8 +117,49 @@ if test -d /Users/tyler.yep/
         ./manage.py test --nologcapture --nocapture"
     alias mut "DJANGO_SETTINGS_MODULE=settings.local.server REUSE_DB=false \
         ./manage.py test --nologcapture --noinput --nocapture"
-    alias brokeback 'source ~/.virtualenvs/brokeback/bin/activate.fish'
-    alias bonfire 'source ~/.virtualenvs/bonfire/bin/activate.fish'
-end
 
-set -g fish_user_paths "/usr/local/opt/tcl-tk/bin" $fish_user_paths
+    alias rh _rh
+    alias brokeback 'cd ~/robinhood/rh/brokeback'
+    alias bonfire 'cd ~/robinhood/rh/bonfire'
+    alias sickle 'cd ~/robinhood/rh/sickle'
+    alias web 'cd ~/robinhood/rh/web/web-app'
+    alias testdata 'cd ~/robinhood/rh/home/client/src/projects/test-data-ui'
+
+    function _rh
+        if test -z $argv[1]
+            cd $RH_HOME
+        else
+            cd $RH_HOME/$argv[1]
+        end
+    end
+
+    alias ktunnel "ssh -N -L \
+        9000:internal-api-rh-production-k8s-loc-qcce1d-31352784.us-east-1.elb.amazonaws.com:443 sm"
+    alias kubeprod "kubectl config use-context production"
+    alias kubedev "kubectl config use-context development"
+    alias kubetest "kubectl config use-context test"
+    alias kgp "kubectl get pods"
+    alias klogs "kubectl logs -c app"
+    alias ksh _ksh
+    alias kkn _kkn
+
+    function _ksh
+        kubectl exec -it ($argv[1]) "bash"
+    end
+
+    function _kkn
+        kubectl config set-context --current --namespace=$argv[1]
+    end
+
+    # function kshell
+    #     set pod $(kubectl get pods --no-headers -o=custom-columns=NAME:.metadata.name | grep ^$1 | head -1)
+    #     set container ""
+    #     # [[ ! -z $2 ]] && set container "-c=$2"
+    #     if [ ! -z $pod ]; then
+    #         kubectl exec -it $pod $container -- /bin/sh -c "which /bin/bash >/dev/null && exec /bin/bash || exec /bin/sh"
+    #     else
+    #         echo "No pods matching \"$1\" were found in the current namespace: \"$(kubectl config view --minify --output 'jsonpath={..namespace}')\""
+    #         return 1
+    #     fi
+    # end
+end

@@ -1,7 +1,9 @@
 # This file contains fish universal variable definitions.
 # VERSION: 3.0
 SETUVAR CONDA_LEFT_PROMPT:1
-SETUVAR EDITOR:vim
+SETUVAR --export DJANGO_SETTINGS_MODULE:sickle\x2esettings\x2elocal
+SETUVAR --export EDITOR:vim
+SETUVAR --export --path PATH:/Users/tyler\x2eyep/\x2epyenv/shims\x20/usr/local/opt/tcl\x2dtk/bin\x20/Users/tyler\x2eyep/\x2epoetry/bin\x20/Users/tyleryep/\x2egem/ruby/X\x2eX\x2e0/bin\x20/Users/tyleryep/\x2ecargo/bin
 SETUVAR __fish_init_2_39_8:\x1d
 SETUVAR __fish_init_2_3_0:\x1d
 SETUVAR __fish_init_3_x:\x1d
@@ -36,4 +38,4 @@ SETUVAR fish_pager_color_description:B3A06D\x1eyellow
 SETUVAR fish_pager_color_prefix:white\x1e\x2d\x2dbold\x1e\x2d\x2dunderline
 SETUVAR fish_pager_color_progress:brwhite\x1e\x2d\x2dbackground\x3dcyan
 SETUVAR fish_prompt_pwd_dir_length:0
-SETUVAR fish_user_paths:/Users/tyler\x2eyep/\x2epoetry/bin\x1e/Users/tyleryep/\x2epoetry/bin\x1e/Users/tyleryep/\x2egem/ruby/X\x2eX\x2e0/bin\x1e/Users/tyleryep/\x2ecargo/bin
+SETUVAR --export fish_user_paths:/usr/local/opt/tcl\x2dtk/bin\x20/Users/tyler\x2eyep/\x2epoetry/bin\x20/Users/tyleryep/\x2egem/ruby/X\x2eX\x2e0/bin\x20/Users/tyleryep/\x2ecargo/bin

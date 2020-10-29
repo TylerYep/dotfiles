@@ -1,7 +1,6 @@
 import os
 import difflib
 
-
 HOME_DIR = "/Users/tyler.yep"
 DOTFILES = [
     ".config/fish/config.fish",
@@ -13,7 +12,7 @@ DOTFILES = [
 ]
 
 
-if __name__ == "__main__":
+def diff() -> None:
     print_diffs = False
     for dotfile in DOTFILES:
         no_match = False
@@ -30,3 +29,7 @@ if __name__ == "__main__":
                             print(a[i], b[i])
         if no_match:
             print(dotfile)
+
+
+if __name__ == "__main__":
+    diff()

@@ -3,8 +3,7 @@ import shutil
 import argparse
 from git import Repo
 
-
-HOME_DIR = "/Users/tyleryep"
+HOME_DIR = "/Users/tyler.yep"
 DOTFILES = [
     ".config/fish",
     ".bash_profile",
