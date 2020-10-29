@@ -4,6 +4,9 @@
 set EDITOR vim
 set BASH_SILENCE_DEPRECATION_WARNING 1
 set WORKON_HOME $HOME/.virtualenvs
+if not contains (pyenv root)/shims $PATH
+    set PATH (pyenv root)/shims:$PATH
+end
 bash /usr/local/bin/virtualenvwrapper.sh
 set GITHUB_HOME ~/Documents/Github
 
