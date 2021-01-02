@@ -8,6 +8,7 @@ if not contains (pyenv root)/shims $PATH
     set PATH (pyenv root)/shims:$PATH
 end
 bash /usr/local/bin/virtualenvwrapper.sh
+source $HOME/.cargo/env
 set GITHUB_HOME ~/Documents/Github
 
 #####################
@@ -15,13 +16,11 @@ set GITHUB_HOME ~/Documents/Github
 #####################
 
 alias fishedit 'code ~/.config/fish/config.fish'
-alias .fish 'cd ~/.config/fish/'
+alias fishconfig 'cd ~/.config/fish/'
 alias history 'code ~/.local/share/fish/fish_history'
 alias cd.. 'cd ..'
 alias ccd 'cd'
 alias filesize 'du -sh'
-alias activ 'conda activate'
-alias deac 'conda deactivate'
 alias pylinta 'find . -iname "*.py" | xargs pylint'
 alias jekyl 'bundle exec jekyll serve'
 alias jup 'jupyter notebook'
@@ -29,15 +28,45 @@ alias pipbuild 'rm -r dist/; python setup.py sdist bdist_wheel; twine upload dis
 alias pipsize "pip list | tail -n +3 | awk '{print \$1}' | xargs pip show | \
     grep -E 'Location:|Name:' | cut -d ' ' -f 2 | paste -d ' ' - - | \
     awk '{print \$2 \"/\" tolower(\$1)}' | xargs du -sh 2> /dev/null"
+alias pupgrade "pur -r requirements.txt; pur -r requirements-dev.txt"
+alias journal _journal
 alias workon _workon
-alias workoff _workoff
+alias workoff "deactivate"
+alias activ workon
+alias deac workoff
+# alias diff_dirs _diff_dirs
 
-function _workon
-    source ~/.virtualenvs/$argv[1]/bin/activate.fish
+function _journal
+    if test -z $argv[1]
+        set folder $GITHUB_HOME/wiki/blog/(date +%Y-%m)
+        set output $folder/(date +%F).md
+        # If file already exists, just open the file
+        if test ! -s $output
+            # Else create the folder and file if necessary
+            if test -d $folder
+                touch $output
+            else
+                mkdir $folder
+            end
+            echo -e >$output "---\ntitle: "(date +%D)"\ntags: [robinhood]\n---"
+        end
+        code $output
+    else
+        set folder (string split - $argv[1])[1]
+        code $GITHUB_HOME/wiki/blog/2020-$folder/2020-$argv[1].md
+    end
 end
 
-function _workoff
-    source ~/.virtualenvs/$argv[1]/bin/deactivate.fish
+function _workon
+    if test -z $argv[1]
+        ls -F ~/.virtualenvs/ | grep / | sed 's/\/$//'
+    else
+        source ~/.virtualenvs/$argv[1]/bin/activate.fish
+    end
+end
+
+function _diff_dirs
+    diff <(cd $argv[1] && find | sort) <(cd $argv[2] && find | sort)
 end
 
 ##############
@@ -113,9 +142,8 @@ end
 
 if test -d /Users/tyler.yep/
     set RH_HOME ~/robinhood/rh
-    alias arc '/Users/tyler.yep/robinhood/phabricator/arcanist/bin/arc'
     alias clean_pyc "find . -name '*.pyc' -delete"
-    alias ad "arc diff --coverage --browse --skip-binaries"
+    # alias ad "arc diff --coverage --browse --skip-binaries"
     alias ut "DJANGO_SETTINGS_MODULE=settings.local.server REUSE_DB=true \
         ./manage.py test --nologcapture --nocapture"
     alias mut "DJANGO_SETTINGS_MODULE=settings.local.server REUSE_DB=false \
@@ -147,12 +175,15 @@ if test -d /Users/tyler.yep/
     alias kkn _kkn
 
     function _ksh
-        kubectl exec -it ($argv[1]) "bash"
+        kubectl exec -it \"($argv[1])\" "bash"
     end
 
     function _kkn
         kubectl config set-context --current --namespace=$argv[1]
     end
+
+    set -x LDFLAGS "-L(brew --prefix openssl@1.1)/lib"
+    set -x CFLAGS "-I(brew --prefix openssl@1.1)/include"
 
     # function kshell
     #     set pod $(kubectl get pods --no-headers -o=custom-columns=NAME:.metadata.name | grep ^$1 | head -1)

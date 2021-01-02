@@ -84,3 +84,5 @@ ksh() { kubectl exec -it "$1" "bash"; }
 function kkn () {
     kctl config set-context --current --namespace=$@
 }
+
+export PATH="$HOME/.cargo/bin:$PATH"
