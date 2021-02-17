@@ -11,6 +11,7 @@ DOTFILES = [
     ".git-prompt.sh",
     ".gitconfig",
     ".vimrc",
+    ".pdbrc",
 ]
 
 

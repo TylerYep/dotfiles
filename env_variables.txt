@@ -1,4 +1,3 @@
-DJANGO_SETTINGS_MODULE=sickle.settings.local
 EDITOR=vim
 HOME=/Users/tyler.yep
 LANG=en_US.UTF-8

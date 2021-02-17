@@ -1,5 +1,5 @@
 import os
-import difflib
+# import difflib
 
 HOME_DIR = "/Users/tyler.yep"
 DOTFILES = [
@@ -12,8 +12,7 @@ DOTFILES = [
 ]
 
 
-def diff() -> None:
-    print_diffs = False
+def diff(print_diffs: bool = False) -> None:
     for dotfile in DOTFILES:
         no_match = False
         root_name = os.path.join(HOME_DIR, dotfile)
