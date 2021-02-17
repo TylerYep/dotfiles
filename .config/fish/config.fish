@@ -22,6 +22,8 @@ alias cd.. 'cd ..'
 alias ccd 'cd'
 alias filesize 'du -sh'
 alias pylinta 'find . -iname "*.py" | xargs pylint'
+alias pyupgradea 'find . -iname "*.py" | xargs pyupgrade'
+alias pre 'pre-commit run -a'
 alias jekyl 'bundle exec jekyll serve'
 alias jup 'jupyter notebook'
 alias pipbuild 'rm -r dist/; python setup.py sdist bdist_wheel; twine upload dist/*'
@@ -29,14 +31,12 @@ alias pipsize "pip list | tail -n +3 | awk '{print \$1}' | xargs pip show | \
     grep -E 'Location:|Name:' | cut -d ' ' -f 2 | paste -d ' ' - - | \
     awk '{print \$2 \"/\" tolower(\$1)}' | xargs du -sh 2> /dev/null"
 alias pupgrade "pur -r requirements.txt; pur -r requirements-dev.txt"
-alias journal _journal
-alias workon _workon
+alias nupgrade "ncu -u; npm-check -y"
 alias workoff "deactivate"
 alias activ workon
 alias deac workoff
-# alias diff_dirs _diff_dirs
 
-function _journal
+function journal
     if test -z $argv[1]
         set folder $GITHUB_HOME/wiki/blog/(date +%Y-%m)
         set output $folder/(date +%F).md
@@ -57,7 +57,7 @@ function _journal
     end
 end
 
-function _workon
+function workon
     if test -z $argv[1]
         ls -F ~/.virtualenvs/ | grep / | sed 's/\/$//'
     else
@@ -65,7 +65,7 @@ function _workon
     end
 end
 
-function _diff_dirs
+function diff_dirs
     diff <(cd $argv[1] && find | sort) <(cd $argv[2] && find | sort)
 end
 
@@ -73,10 +73,10 @@ end
 #   Github   #
 ##############
 
-alias github _github
 alias gita 'git add .; git commit -m'
 alias gitamend 'git add .; git commit --amend'
 alias gitstash 'git add .; git stash'
+alias gitupstream 'git branch --set-upstream-to=origin/master'
 
 # Remove all currently staged files (good for updating gitignore).
 alias gitclear 'git rm -r --cached .'
@@ -85,16 +85,10 @@ alias gitclear 'git rm -r --cached .'
 alias gitprune 'git remote prune origin'
 # git branch --v | grep "\[gone\]" | awk '{print $1}' | xargs git branch -D
 
-# Expects a directory name. Runs git status on that repo.
-alias gitstatus _status
-
-# Runs shortened git status on all repos in Github folder.
-alias gitsummary _summary
-
 # Gets number of lines in all files of a GitHub repo.
 alias gitlines 'git ls-files | grep -Ev ".pdf|.png|.jpg" | xargs wc -l'
 
-function _github
+function ghub
     if test -z $argv[1]
         cd $GITHUB_HOME
     else
@@ -102,11 +96,13 @@ function _github
     end
 end
 
-function _status
+# Expects a directory name. Runs git status on that repo.
+function gitstatus
     find $GITHUB_HOME/$argv[1] -name .git -execdir git status \;
 end
 
-function _summary
+# Runs shortened git status on all repos in Github folder.
+function gitsummary
     find $GITHUB_HOME -maxdepth 1 -mindepth 1 -type d -exec sh -c \
         "(echo {} && cd {} && git status && git fetch && echo;)" \;
 end
@@ -115,24 +111,24 @@ end
 #   Directory Aliases   #
 #########################
 
+alias desktop 'cd ~/Desktop'
 alias downloads 'cd ~/Downloads'
 alias documents 'cd ~/Documents'
 alias pictures 'cd ~/Pictures'
 alias planner 'open ~/Documents/Stanford_4_Year_Plan.xlsx'
 alias resume 'open ~/Documents/TylerYep_2020.docx'
 
-alias blog 'github blog'
-alias wiki 'github wiki'
-alias tyep 'github tyleryep.github.io'
-alias wolf 'github wolfbot'
-alias workshop 'github workshop'
-alias explore _explore
+alias blog 'ghub blog'
+alias wiki 'ghub wiki'
+alias tyep 'ghub tyleryep.github.io'
+alias wolf 'ghub wolfbot'
+alias workshop 'ghub workshop'
 
-function _explore
+function explore
     if test -z $argv[1]
         cd $GITHUB_HOME/workshop/explore
     else
-        code $GITHUB_HOME/workshop/explore/$argv[1]
+        code $GITHUB_HOME/workshop/explore/$argv[1].py
     end
 end
 
@@ -149,14 +145,11 @@ if test -d /Users/tyler.yep/
     alias mut "DJANGO_SETTINGS_MODULE=settings.local.server REUSE_DB=false \
         ./manage.py test --nologcapture --noinput --nocapture"
 
-    alias rh _rh
-    alias brokeback 'cd ~/robinhood/rh/brokeback'
-    alias bonfire 'cd ~/robinhood/rh/bonfire'
-    alias sickle 'cd ~/robinhood/rh/sickle'
-    alias web 'cd ~/robinhood/rh/web/web-app'
-    alias testdata 'cd ~/robinhood/rh/home/client/src/projects/test-data-ui'
+    alias web 'rh web/web-app'
+    alias testdata 'rh home/client/src/projects/test-data-ui'
+    alias rdt 'cd ~/robinhood/robinhood-deploy-tools'
 
-    function _rh
+    function rh
         if test -z $argv[1]
             cd $RH_HOME
         else
@@ -166,34 +159,37 @@ if test -d /Users/tyler.yep/
 
     alias ktunnel "ssh -N -L \
         9000:internal-api-rh-production-k8s-loc-qcce1d-31352784.us-east-1.elb.amazonaws.com:443 sm"
-    alias kubeprod "kubectl config use-context production"
     alias kubedev "kubectl config use-context development"
+    alias kubeprod "kubectl config use-context production"
     alias kubetest "kubectl config use-context test"
-    alias kgp "kubectl get pods"
+    alias kls "kubectl config view --minify --output 'jsonpath={..namespace}'"
+    alias kpods "kubectl get pods"
     alias klogs "kubectl logs -c app"
-    alias ksh _ksh
-    alias kkn _kkn
 
-    function _ksh
-        kubectl exec -it \"($argv[1])\" "bash"
+    function ksh
+        kubectl exec -it $argv[1] "bash"
     end
 
-    function _kkn
+    function ktxt
         kubectl config set-context --current --namespace=$argv[1]
+    end
+
+    function kshell
+        set pod (kubectl get pods --no-headers -o=custom-columns=NAME:.metadata.name \
+            | grep $argv[1] | head -1)
+        set container ""
+        if test -z $argv[2]
+            set container -c=$argv[2]
+        end
+        if test -z $pod
+            echo "No matching pods were found in the current namespace: "(kls)
+            return 1
+        else
+            kubectl exec -it $pod $container -- /bin/sh -c \
+                "which /bin/bash >/dev/null && exec /bin/bash || exec /bin/sh"
+        end
     end
 
     set -x LDFLAGS "-L(brew --prefix openssl@1.1)/lib"
     set -x CFLAGS "-I(brew --prefix openssl@1.1)/include"
-
-    # function kshell
-    #     set pod $(kubectl get pods --no-headers -o=custom-columns=NAME:.metadata.name | grep ^$1 | head -1)
-    #     set container ""
-    #     # [[ ! -z $2 ]] && set container "-c=$2"
-    #     if [ ! -z $pod ]; then
-    #         kubectl exec -it $pod $container -- /bin/sh -c "which /bin/bash >/dev/null && exec /bin/bash || exec /bin/sh"
-    #     else
-    #         echo "No pods matching \"$1\" were found in the current namespace: \"$(kubectl config view --minify --output 'jsonpath={..namespace}')\""
-    #         return 1
-    #     fi
-    # end
 end

@@ -1,7 +1,6 @@
 # This file contains fish universal variable definitions.
 # VERSION: 3.0
 SETUVAR CONDA_LEFT_PROMPT:1
-SETUVAR --export DJANGO_SETTINGS_MODULE:sickle\x2esettings\x2elocal
 SETUVAR --export EDITOR:vim
 SETUVAR --export IT_DEV_NAMESPACE:tyler\x2dyep
 SETUVAR --export --path PATH:/Users/tyler\x2eyep/\x2epyenv/shims\x1e/usr/local/opt/tcl\x2dtk/bin\x20/Users/tyler\x2eyep/\x2epoetry/bin\x20/Users/tyleryep/\x2egem/ruby/X\x2eX\x2e0/bin\x20/Users/tyleryep/\x2ecargo/bin
