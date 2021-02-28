@@ -15,18 +15,18 @@ set GITHUB_HOME ~/Documents/Github
 #   Shell Aliases   #
 #####################
 
-alias fishedit 'code ~/.config/fish/config.fish'
-alias fishconfig 'cd ~/.config/fish/'
-alias history 'code ~/.local/share/fish/fish_history'
-alias cd.. 'cd ..'
-alias ccd 'cd'
-alias filesize 'du -sh'
-alias pylinta 'find . -iname "*.py" | xargs pylint'
-alias pyupgradea 'find . -iname "*.py" | xargs pyupgrade'
-alias pre 'pre-commit run -a'
-alias jekyl 'bundle exec jekyll serve'
-alias jup 'jupyter notebook'
-alias pipbuild 'rm -r dist/; python setup.py sdist bdist_wheel; twine upload dist/*'
+alias fishedit "code ~/.config/fish/config.fish"
+alias fishconfig "cd ~/.config/fish/"
+alias history "code ~/.local/share/fish/fish_history"
+alias cd.. "cd .."
+alias ccd "cd"
+alias filesize "du -sh"
+alias pylinta "find . -iname '*.py' | xargs pylint"
+alias pyupgradea "find . -iname '*.py' | xargs pyupgrade"
+alias pre "pre-commit run -a"
+alias jekyl "bundle exec jekyll serve"
+alias jup "jupyter notebook"
+alias pipbuild "rm -r dist/; python setup.py sdist bdist_wheel; twine upload dist/*"
 alias pipsize "pip list | tail -n +3 | awk '{print \$1}' | xargs pip show | \
     grep -E 'Location:|Name:' | cut -d ' ' -f 2 | paste -d ' ' - - | \
     awk '{print \$2 \"/\" tolower(\$1)}' | xargs du -sh 2> /dev/null"
@@ -73,20 +73,20 @@ end
 #   Github   #
 ##############
 
-alias gita 'git add .; git commit -m'
-alias gitamend 'git add .; git commit --amend'
-alias gitstash 'git add .; git stash'
-alias gitupstream 'git branch --set-upstream-to=origin/master'
+alias gita "git add .; git commit -m"
+alias gitamend "git add .; git commit --amend"
+alias gitstash "git add .; git stash"
+alias gitupstream "git branch --set-upstream-to=origin/master"
 
 # Remove all currently staged files (good for updating gitignore).
-alias gitclear 'git rm -r --cached .'
+alias gitclear "git rm -r --cached ."
 
 # Remove all branches that are already in sync with origin master.
-alias gitprune 'git remote prune origin'
-# git branch --v | grep "\[gone\]" | awk '{print $1}' | xargs git branch -D
+alias gitprune "git remote prune origin"
+# git branch --v | grep "\[gone\]" | awk "{print $1}" | xargs git branch -D
 
 # Gets number of lines in all files of a GitHub repo.
-alias gitlines 'git ls-files | grep -Ev ".pdf|.png|.jpg" | xargs wc -l'
+alias gitlines "git ls-files | grep -Ev '.pdf|.png|.jpg' | xargs wc -l"
 
 function ghub
     if test -z $argv[1]
@@ -111,18 +111,18 @@ end
 #   Directory Aliases   #
 #########################
 
-alias desktop 'cd ~/Desktop'
-alias downloads 'cd ~/Downloads'
-alias documents 'cd ~/Documents'
-alias pictures 'cd ~/Pictures'
-alias planner 'open ~/Documents/Stanford_4_Year_Plan.xlsx'
-alias resume 'open ~/Documents/TylerYep_2020.docx'
+alias desktop "cd ~/Desktop"
+alias downloads "cd ~/Downloads"
+alias documents "cd ~/Documents"
+alias pictures "cd ~/Pictures"
+alias planner "open ~/Documents/Stanford_4_Year_Plan.xlsx"
+alias resume "open ~/Documents/TylerYep_2020.docx"
 
-alias blog 'ghub blog'
-alias wiki 'ghub wiki'
-alias tyep 'ghub tyleryep.github.io'
-alias wolf 'ghub wolfbot'
-alias workshop 'ghub workshop'
+alias blog "ghub blog"
+alias wiki "ghub wiki"
+alias tyep "ghub tyleryep.github.io"
+alias wolf "ghub wolfbot"
+alias workshop "ghub workshop"
 
 function explore
     if test -z $argv[1]
@@ -145,9 +145,9 @@ if test -d /Users/tyler.yep/
     alias mut "DJANGO_SETTINGS_MODULE=settings.local.server REUSE_DB=false \
         ./manage.py test --nologcapture --noinput --nocapture"
 
-    alias web 'rh web/web-app'
-    alias testdata 'rh home/client/src/projects/test-data-ui'
-    alias rdt 'cd ~/robinhood/robinhood-deploy-tools'
+    alias web "rh web/web-app"
+    alias testdata "rh home/client/src/projects/test-data-ui"
+    alias rdt "cd ~/robinhood/robinhood-deploy-tools"
 
     function rh
         if test -z $argv[1]
@@ -171,7 +171,7 @@ if test -d /Users/tyler.yep/
     end
 
     function ktxt
-        kubectl config set-context --current --namespace=$argv[1]
+        kubectl config set-context --current --namespace=brokeback-us-$argv[1]
     end
 
     function kshell
