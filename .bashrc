@@ -2,9 +2,11 @@
 #   Global Config   #
 #####################
 # \u is user, \h is hostname, \w is pwd, then the git branch
+# \[\e]0;\u: \w\a\] sets the title bar
 # Bash Colors: https://misc.flogisoft.com/bash/tip_colors_and_formatting
 source ~/.git-prompt.sh
-export PS1='\e[1m\e[34m\u\e[36m:\w \e[32m$(__git_ps1 '[%s]') \e[35m❯\e[36m❯\e[32m❯\e[39m\e[0m '
+# Important: this needs to be single quotes
+export PS1='\[\e]0;\u: \w\a\]\e[1m\e[34m\u\e[36m:\w \e[32m$(__git_ps1 "[%s] ")\e[35m❯\e[36m❯\e[32m❯\e[39m\e[0m '
 
 # set EDITOR vim
 # set BASH_SILENCE_DEPRECATION_WARNING 1
@@ -110,24 +112,20 @@ if [[ -d /Users/tyler.yep/ ]]; then
     alias ksh="kubectl exec -it $1 'bash'"
     alias ktxt="kubectl config set-context --current --namespace=brokeback-us-$1"
 
-    # function kshell
-    #     set pod (kubectl get pods --no-headers -o=custom-columns=NAME:.metadata.name \
-    #         | grep $argv[1] | head -1)
-    #     set container ""
-    #     if test -z $argv[2]
-    #         set container -c=$argv[2]
-    #     end
-    #     if test -z $pod
-    #         echo "No matching pods were found in the current namespace: "(kls)
-    #         return 1
-    #     else
-    #         kubectl exec -it $pod $container -- /bin/sh -c \
-    #             "which /bin/bash >/dev/null && exec /bin/bash || exec /bin/sh"
-    #     end
-    # end
+    function kshell() {
+        pod = $(kubectl get pods --no-headers -o=custom-columns=NAME:.metadata.name | grep ^$1 | head -1)
+        container = ""
+        [[ ! -z $2 ]] && container = "-c=$2"
+        if [ -z $pod ]; then
+            echo "No pods matching \"$1\" were found in the current namespace: \"$(kls)\""
+            return 1
+        else
+            kubectl exec -it $pod $container -- /bin/sh -c "which /bin/bash >/dev/null && exec /bin/bash || exec /bin/sh"
+        fi
+    }
 
-    set -x LDFLAGS "-L(brew --prefix openssl@1.1)/lib"
-    set -x CFLAGS "-I(brew --prefix openssl@1.1)/include"
+    # set -x LDFLAGS "-L(brew --prefix openssl@1.1)/lib"
+    # set -x CFLAGS "-I(brew --prefix openssl@1.1)/include"
 fi
 
 export NVM_DIR="$HOME/.nvm"
