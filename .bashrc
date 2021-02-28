@@ -109,7 +109,7 @@ if [[ -d /Users/tyler.yep/ ]]; then
     alias kls="kubectl config view --minify --output 'jsonpath={..namespace}'"
     alias kpods="kubectl get pods"
     alias klogs="kubectl logs -c app"
-    alias ksh="kubectl exec -it $1 'bash'"
+    # alias ksh="kubectl exec -it $1 'bash'""
     alias ktxt="kubectl config set-context --current --namespace=brokeback-us-$1"
 
     function kshell() {

@@ -15,7 +15,7 @@ DOTFILES = [
 ]
 
 
-def remove_duplicate_files(destination, filename):
+def remove_duplicate_files(destination: str, filename: str) -> None:
     full_dest_path = os.path.join(destination, filename)
     if os.path.isdir(full_dest_path):
         shutil.rmtree(full_dest_path)
@@ -23,7 +23,7 @@ def remove_duplicate_files(destination, filename):
         os.remove(full_dest_path)
 
 
-def copy_file_or_folder(source, destination, filename):
+def copy_file_or_folder(source: str, destination: str, filename: str) -> None:
     full_src_path = os.path.join(source, filename)
     full_dest_path = os.path.join(destination, filename)
     if os.path.isdir(full_src_path):
@@ -32,7 +32,7 @@ def copy_file_or_folder(source, destination, filename):
         shutil.copy(full_src_path, full_dest_path)
 
 
-def create_dotfiles(source, destination):
+def create_dotfiles(source: str, destination: str) -> None:
     if source == "~":
         source = HOME_DIR
     if destination == "~":
