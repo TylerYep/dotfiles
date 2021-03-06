@@ -7,14 +7,13 @@
 source ~/.git-prompt.sh
 # Important: this needs to be single quotes
 export PS1='\[\e]0;\u: \w\a\]\e[1m\e[34m\u\e[36m:\w \e[32m$(__git_ps1 "[%s] ")\e[35m❯\e[36m❯\e[32m❯\e[39m\e[0m '
-
-# set EDITOR vim
-# set BASH_SILENCE_DEPRECATION_WARNING 1
-# set WORKON_HOME $HOME/.virtualenvs
+export EDITOR=vim
+export BASH_SILENCE_DEPRECATION_WARNING=1
+export WORKON_HOME=$HOME/.virtualenvs
+source /usr/local/bin/virtualenvwrapper.sh
 # if not contains (pyenv root)/shims $PATH
 #     set PATH (pyenv root)/shims:$PATH
 # end
-# bash /usr/local/bin/virtualenvwrapper.sh
 # source $HOME/.cargo/env
 # set GITHUB_HOME ~/Documents/Github
 
@@ -40,7 +39,7 @@ alias pipsize="pip list | tail -n +3 | awk '{print \$1}' | xargs pip show | \
     awk '{print \$2 \"/\" tolower(\$1)}' | xargs du -sh 2> /dev/null"
 alias pupgrade="pur -r requirements.txt; pur -r requirements-dev.txt"
 alias nupgrade="ncu -u; npm-check -y"
-alias workon="source ~/.virtualenvs/$1/bin/activate.sh"
+function workon() { source ~/.virtualenvs/$1/bin/activate; }
 alias workoff="deactivate"
 
 ##############
@@ -89,7 +88,8 @@ alias workshop="ghub workshop"
 #########################
 
 if [[ -d /Users/tyler.yep/ ]]; then
-    set RH_HOME ~/robinhood/rh
+    # set RH_HOME ~/robinhood/rh
+    alias rh="cd ~/robinhood/rh"
     alias clean_pyc="find . -name '*.pyc' -delete"
     # alias ad="arc diff --coverage --browse --skip-binaries"
     alias ut="DJANGO_SETTINGS_MODULE=settings.local.server REUSE_DB=true \
@@ -109,8 +109,8 @@ if [[ -d /Users/tyler.yep/ ]]; then
     alias kls="kubectl config view --minify --output 'jsonpath={..namespace}'"
     alias kpods="kubectl get pods"
     alias klogs="kubectl logs -c app"
-    # alias ksh="kubectl exec -it $1 'bash'""
-    alias ktxt="kubectl config set-context --current --namespace=brokeback-us-$1"
+    ksh() { kubectl exec -it "$1" "bash"; }
+    ktxt() { kubectl config set-context --current --namespace=brokeback-us-$1; }
 
     function kshell() {
         pod = $(kubectl get pods --no-headers -o=custom-columns=NAME:.metadata.name | grep ^$1 | head -1)
