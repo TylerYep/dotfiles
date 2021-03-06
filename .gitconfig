@@ -6,7 +6,18 @@
 	clean = git-lfs clean -- %f
 	smudge = git-lfs smudge -- %f
 	process = git-lfs filter-process
-[push]
-	default = simple
+[branch]
+	autosetupmerge = always
+	autosetuprebase = always
+[diff]
+	colorMoved = zebra
+[feature]
+	manyFiles = 1
+[fetch]
+	prune = true
 [pull]
 	rebase = true
+[push]
+	default = simple
+[rebase]
+	autosquash = true
