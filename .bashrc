@@ -21,6 +21,11 @@ source /usr/local/bin/virtualenvwrapper.sh
 #   Shell Aliases   #
 #####################
 
+alias ..="cd .."
+alias ...="cd ../.."
+alias ....="cd ../../.."
+alias .....="cd ../../../.."
+alias ......="cd ../../../../.."
 alias bashedit="code ~/.bashrc"
 alias fishedit="code ~/.config/fish/config.fish"
 alias fishconfig="cd ~/.config/fish/"
