@@ -42,26 +42,31 @@ def create_dotfiles(source: str, destination: str) -> None:
         copy_file_or_folder(source, destination, filename)
 
 
-def init_pipeline():
+def init_pipeline() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
         description="Use imp to commit new configs and exp to use the saved configs."
     )
     parser.add_argument("mode", type=str, choices=["imp", "exp"], help="mode")
+    parser.add_argument("force", "-f", action="store_true")
     return parser.parse_args()
 
 
-if __name__ == "__main__":
-    repo = Repo(".")
-    changed_files = [item.a_path for item in repo.index.diff(None)]
-    if changed_files:
-        raise RuntimeError(
-            "Please commit changes to the repo before attempting to update dotfiles."
-        )
-
+def main() -> None:
     args = init_pipeline()
+    if not args.force:
+        repo = Repo(".")
+        changed_files = [item.a_path for item in repo.index.diff(None)]
+        if changed_files:
+            raise RuntimeError(
+                "Please commit changes before attempting to update dotfiles."
+            )
     if args.mode == "imp":
         create_dotfiles("~", ".")
     elif args.mode == "exp":
         create_dotfiles(".", "~")
     else:
         raise ValueError
+
+
+if __name__ == "__main__":
+    main()

@@ -39,6 +39,7 @@ alias pipsize "pip list | tail -n +3 | awk '{print \$1}' | xargs pip show | \
     awk '{print \$2 \"/\" tolower(\$1)}' | xargs du -sh 2> /dev/null"
 alias pupgrade "pur -r requirements.txt; pur -r requirements-dev.txt"
 alias nupgrade "ncu -u; npm-check -y"
+alias brewupgrade "brew upgrade fish git pyenv sherwood"
 alias workoff "deactivate"
 alias activ workon
 alias deac workoff
@@ -80,9 +81,9 @@ end
 #   Github   #
 ##############
 
-alias gita "git add .; git commit -m"
-alias gitamend "git add .; git commit --amend"
-alias gitstash "git add .; git stash"
+alias gita "git add -u; git commit -m"
+alias gitamend "git add -u; git commit --amend"
+alias gitstash "git add -u; git stash"
 alias gitupstream "git branch --set-upstream-to=origin/master"
 
 # Remove all currently staged files (good for updating gitignore).
