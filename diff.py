@@ -1,7 +1,7 @@
-import os
-# import difflib
+import difflib
+from pathlib import Path
 
-HOME_DIR = "/Users/tyler.yep"
+HOME_DIR = Path("/Users/tyler.yep")
 DOTFILES = [
     ".config/fish/config.fish",
     ".bash_profile",
@@ -12,21 +12,12 @@ DOTFILES = [
 ]
 
 
-def diff(print_diffs: bool = False) -> None:
+def diff() -> None:
     for dotfile in DOTFILES:
-        no_match = False
-        root_name = os.path.join(HOME_DIR, dotfile)
+        root_name = HOME_DIR / dotfile
         with open(root_name) as f1, open(dotfile) as f2:
-            # z = difflib.SequenceMatcher(None, f1.read(), f2.read())
-            a = f1.readlines()
-            b = f2.readlines()
-            for i in range(min(len(a), len(b))):
-                if a[i] != b[i]:
-                    no_match = True
-                    if print_diffs:
-                        print(a[i], b[i])
-        if no_match:
-            print(dotfile)
+            for line in difflib.unified_diff(f1.readlines(), f2.readlines()):
+                print(line, end="")
 
 
 if __name__ == "__main__":

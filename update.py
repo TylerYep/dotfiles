@@ -1,9 +1,10 @@
-import os
-import shutil
 import argparse
+import shutil
+from pathlib import Path
+
 from git import Repo
 
-HOME_DIR = "/Users/tyler.yep"
+HOME_DIR = Path("/Users/tyler.yep")
 DOTFILES = [
     ".config/fish",
     ".bash_profile",
@@ -15,31 +16,29 @@ DOTFILES = [
 ]
 
 
-def remove_duplicate_files(destination: str, filename: str) -> None:
-    full_dest_path = os.path.join(destination, filename)
-    if os.path.isdir(full_dest_path):
+def remove_duplicate_files(destination: Path, filename: str) -> None:
+    full_dest_path = destination / filename
+    if full_dest_path.is_dir():
         shutil.rmtree(full_dest_path)
-    elif os.path.isfile(full_dest_path):
-        os.remove(full_dest_path)
+    elif full_dest_path.is_file():
+        full_dest_path.unlink()
 
 
-def copy_file_or_folder(source: str, destination: str, filename: str) -> None:
-    full_src_path = os.path.join(source, filename)
-    full_dest_path = os.path.join(destination, filename)
-    if os.path.isdir(full_src_path):
+def copy_file_or_folder(source: Path, destination: Path, filename: str) -> None:
+    full_src_path = source / filename
+    full_dest_path = destination / filename
+    if full_src_path.is_dir():
         shutil.copytree(full_src_path, full_dest_path)
-    else:
+    elif full_src_path.is_file():
         shutil.copy(full_src_path, full_dest_path)
 
 
 def create_dotfiles(source: str, destination: str) -> None:
-    if source == "~":
-        source = HOME_DIR
-    if destination == "~":
-        destination = HOME_DIR
+    src = HOME_DIR if source == "~" else Path(source)
+    dest = HOME_DIR if destination == "~" else Path(destination)
     for filename in DOTFILES:
-        remove_duplicate_files(destination, filename)
-        copy_file_or_folder(source, destination, filename)
+        remove_duplicate_files(dest, filename)
+        copy_file_or_folder(src, dest, filename)
 
 
 def init_pipeline() -> argparse.Namespace:
@@ -47,7 +46,7 @@ def init_pipeline() -> argparse.Namespace:
         description="Use imp to commit new configs and exp to use the saved configs."
     )
     parser.add_argument("mode", type=str, choices=["imp", "exp"], help="mode")
-    parser.add_argument("force", "-f", action="store_true")
+    parser.add_argument("--force", "-f", action="store_true")
     return parser.parse_args()
 
 
