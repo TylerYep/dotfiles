@@ -4,7 +4,6 @@ from pathlib import Path
 
 from git import Repo
 
-HOME_DIR = Path("/Users/tyler.yep")
 DOTFILES = [
     ".config/fish",
     ".bash_profile",
@@ -34,8 +33,8 @@ def copy_file_or_folder(source: Path, destination: Path, filename: str) -> None:
 
 
 def create_dotfiles(source: str, destination: str) -> None:
-    src = HOME_DIR if source == "~" else Path(source)
-    dest = HOME_DIR if destination == "~" else Path(destination)
+    src = Path(source).expanduser()
+    dest = Path(destination).expanduser()
     for filename in DOTFILES:
         remove_duplicate_files(dest, filename)
         copy_file_or_folder(src, dest, filename)
