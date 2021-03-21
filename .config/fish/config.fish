@@ -24,6 +24,7 @@ alias bashedit "code ~/.bashrc"
 alias fishedit "code ~/.config/fish/config.fish"
 alias fishconfig "cd ~/.config/fish/"
 alias history "code ~/.local/share/fish/fish_history"
+alias minecraft "open ~/Library/Application\ Support/minecraft/"
 alias cd.. "cd .."
 alias ccd "cd"
 alias filesize "du -sh"
@@ -81,9 +82,9 @@ end
 #   Github   #
 ##############
 
-alias gita "git add -u; git commit -m"
-alias gitamend "git add -u; git commit --amend"
-alias gitstash "git add -u; git stash"
+alias gita "git add -A; git commit -m"
+alias gitamend "git add -A; git commit --amend"
+alias gitstash "git add -A; git stash"
 alias gitupstream "git branch --set-upstream-to=origin/master"
 
 # Remove all currently staged files (good for updating gitignore).
@@ -165,24 +166,37 @@ if test -d /Users/tyler.yep/
         end
     end
 
+    alias k "kubectl"
     alias ktunnel "ssh -N -L \
         9000:internal-api-rh-production-k8s-loc-qcce1d-31352784.us-east-1.elb.amazonaws.com:443 sm"
-    alias kubedev "kubectl config use-context development"
-    alias kubeprod "kubectl config use-context production"
-    alias kubetest "kubectl config use-context test"
+    alias ktunnel1 "ssh -N -L \
+        9001:internal-api-rh-production-1-k8s-l-vqhams-358126698.us-east-1.elb.amazonaws.com:443 sm"
+    alias ktunnel2 "ssh -N -L \
+        9003:internal-api-rh-production-2-k8s-l-3fqh39-928912726.us-east-1.elb.amazonaws.com:443 sm"
+
+    alias knamespace "kubectl --context rh-production.k8s.local -v=8 get namespaces"
+    alias knamespace1 "kubectl --context rh-production-1.k8s.local -v=8 get namespaces"
+    alias knamespace2 "kubectl --context rh-production-2.k8s.local -v=8 get namespaces"
+
+    alias kdev "kubectl config use-context development"
+    alias kprod "kubectl config use-context production"
+    alias ktest "kubectl config use-context test"
     alias kls "kubectl config view --minify --output 'jsonpath={..namespace}'"
     alias kpods "kubectl get pods"
     alias klogs "kubectl logs -c app"
 
     function ksh
-        kubectl exec -it $argv[1] "bash"
+        # SSH into the pod matching name exactly
+        kubectl exec -it $argv[1] bash
     end
 
     function ktxt
-        kubectl config set-context --current --namespace=brokeback-us-$argv[1]
+        # Expects the full name, e.g. brokeback-us-1 or discovery
+        kubectl config set-context --current --namespace=$argv[1]
     end
 
     function kshell
+        # SSH into the pod matching grep'ed name
         set pod (kubectl get pods --no-headers -o=custom-columns=NAME:.metadata.name \
             | grep $argv[1] | head -1)
         set container ""

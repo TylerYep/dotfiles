@@ -116,7 +116,7 @@ if [[ -d /Users/tyler.yep/ ]]; then
     alias kpods="kubectl get pods"
     alias klogs="kubectl logs -c app"
     ksh() { kubectl exec -it "$1" "bash"; }
-    ktxt() { kubectl config set-context --current --namespace=brokeback-us-$1; }
+    ktxt() { kubectl config set-context --current --namespace=$1; }
 
     function kshell() {
         pod = $(kubectl get pods --no-headers -o=custom-columns=NAME:.metadata.name | grep ^$1 | head -1)
