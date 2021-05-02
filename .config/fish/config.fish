@@ -20,6 +20,7 @@ alias ... "cd ../.."
 alias .... "cd ../../.."
 alias ..... "cd ../../../.."
 alias ...... "cd ../../../../.."
+alias finder "open ."
 alias bashedit "code ~/.bashrc"
 alias fishedit "code ~/.config/fish/config.fish"
 alias fishconfig "cd ~/.config/fish/"
@@ -44,6 +45,18 @@ alias brewupgrade "brew upgrade fish git pyenv sherwood"
 alias workoff "deactivate"
 alias activ workon
 alias deac workoff
+
+function preall
+    cd ~/Documents/Github
+    for folder in *
+        if test -e $folder/.pre-commit-config.yaml
+            echo $folder
+            cd $folder
+            pre-commit run -a
+            cd ..
+        end
+    end
+end
 
 function journal
     if test -z $argv[1]
@@ -97,12 +110,20 @@ alias gitprune "git remote prune origin"
 # Gets number of lines in all files of a GitHub repo.
 alias gitlines "git ls-files | grep -Ev '.pdf|.png|.jpg' | xargs wc -l"
 
-function ghub
+function github
     if test -z $argv[1]
         cd $GITHUB_HOME
     else
         cd $GITHUB_HOME/$argv[1]
     end
+end
+
+function gitdiff
+    git diff @~$argv[1] @~(math $argv[1] - 1)
+end
+
+function gitcheckout
+    git checkout master; git pull; git checkout -b $argv[1]; gitupstream
 end
 
 # Expects a directory name. Runs git status on that repo.
@@ -116,6 +137,11 @@ function gitsummary
         "(echo {} && cd {} && git status && git fetch && echo;)" \;
 end
 
+function gitcherrypickrepo
+    git --git-dir=../$argv[1]/.git \
+    format-patch -k -1 --stdout $argv[2] | git am -3 -k --ignore-whitespace
+end
+
 #########################
 #   Directory Aliases   #
 #########################
@@ -127,17 +153,17 @@ alias pictures "cd ~/Pictures"
 alias planner "open ~/Documents/Stanford_4_Year_Plan.xlsx"
 alias resume "open ~/Documents/TylerYep_2020.docx"
 
-alias blog "ghub blog"
-alias wiki "ghub wiki"
-alias tyep "ghub tyleryep.github.io"
-alias wolf "ghub wolfbot"
-alias workshop "ghub workshop"
+alias blog "github blog"
+alias wiki "github wiki"
+alias tyep "github tyleryep.github.io"
+alias wolf "github wolfbot"
+alias workshop "github workshop"
 
 function explore
     if test -z $argv[1]
         cd $GITHUB_HOME/workshop/explore
     else
-        code $GITHUB_HOME/workshop/explore/$argv[1].py
+        code $GITHUB_HOME/workshop/explore/$argv[1]
     end
 end
 
@@ -157,6 +183,9 @@ if test -d /Users/tyler.yep/
     alias web "rh web/web-app"
     alias testdata "rh home/client/src/projects/test-data-ui"
     alias rdt "cd ~/robinhood/robinhood-deploy-tools"
+    alias bamboo "bazel run //bamboo:manage --"
+    alias btest "bazel test --test_output=streamed --test_arg=--color=yes \
+        --test_arg=--disable-warnings --test_arg=--durations=10 //bamboo:test"
 
     function rh
         if test -z $argv[1]
@@ -178,7 +207,7 @@ if test -d /Users/tyler.yep/
     alias knamespace1 "kubectl --context rh-production-1.k8s.local -v=8 get namespaces"
     alias knamespace2 "kubectl --context rh-production-2.k8s.local -v=8 get namespaces"
 
-    alias kdev "kubectl config use-context development"
+    alias kdev "it workon tyler-yep"
     alias kprod "kubectl config use-context production"
     alias ktest "kubectl config use-context test"
     alias kls "kubectl config view --minify --output 'jsonpath={..namespace}'"
