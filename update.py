@@ -6,7 +6,6 @@ from git import Repo
 
 DOTFILES = [
     ".config/fish",
-    ".oh-my-zsh/custom",
     ".bash_profile",
     ".bashrc",
     ".git-prompt.sh",
